@@ -51,6 +51,16 @@ pipeline {
                 archiveArtifacts artifacts: 'app/build/outputs/apk/debug/*.apk', fingerprint: true
             }
         }
+
+        stage('Distribute') {
+            // Publish on branch builds; skip PR builds
+            when { not { changeRequest() } }
+            steps {
+                withCredentials([file(credentialsId: 'firebase-sa', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                    sh './gradlew appDistributionUploadDebug --no-daemon'
+                }
+            }
+        }
     }
 
     post {

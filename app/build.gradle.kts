@@ -1,7 +1,11 @@
+import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.firebase.appdistribution)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -21,6 +25,14 @@ android {
     }
 
     buildTypes {
+        debug {
+            firebaseAppDistribution {
+                appId = "1:459976643924:android:48758b552451c260d6e4c1"
+                artifactType = "APK"
+                releaseNotes = "Jenkins build ${System.getenv("BUILD_NUMBER") ?: "local"}"
+                // Credentials: read from the GOOGLE_APPLICATION_CREDENTIALS env var (set by Jenkins).
+            }
+        }
         release {
             optimization {
                 enable = false
@@ -58,4 +70,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
+
+    implementation(platform("com.google.firebase:firebase-bom:34.19.0"))
+    implementation("com.google.firebase:firebase-analytics")
 }

@@ -29,6 +29,7 @@ android {
             firebaseAppDistribution {
                 appId = "1:459976643924:android:48758b552451c260d6e4c1"
                 artifactType = "APK"
+                groups = "qa-team"
                 releaseNotes = "Jenkins build ${System.getenv("BUILD_NUMBER") ?: "local"}"
                 // Credentials: read from the GOOGLE_APPLICATION_CREDENTIALS env var (set by Jenkins).
             }
